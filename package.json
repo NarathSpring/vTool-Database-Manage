@@ -1,0 +1,17 @@
+{
+  "name": "v-orm",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "webpack-dev": "./node_modules/.bin/webpack index.ts"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.6",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
+  }
+}
