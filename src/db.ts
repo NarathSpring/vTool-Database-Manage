@@ -44,7 +44,7 @@ class VTool {
         return;
       }
       console.log("创建数据库成功：");
-      console.log(results);
+      // console.log(results);
     });
   }
   dropDatabase(database_name: string) {
@@ -52,6 +52,11 @@ class VTool {
   }
   createTable(table_name: string, content: object) {
     //  CREATE TABLE table_name (content)
+    // const q = `CREATE TABLE IF NOT EXISTS ${content}`
+    const q = 'CREATE TABLE IF NOT EXISTS (' +
+      
+      +')'
+
   }
   dropTable(table_name: string) {
     // DROP TABLE table_name
@@ -66,7 +71,7 @@ class VTool {
         console.log(err);
         return;
       }
-      console.log(results);
+      console.log(results[0]);
     });
   }
   showTable(table_name: string) {}
