@@ -32,49 +32,71 @@ class VTool {
     });
   }
   query() {}
+
+  show(database_name: string, table_name?: string) {
+    if (arguments.length === 1) {
+      const q = "SHOW DATABASES";
+      this.connection.query(q, (err, results, fields) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+      console.log(results);
+      });
+    } else {
+      const q = `SHOW ${table_name} FROM ${database_name}`;
+    }
+  }
+
   add() {}
+
   remove() {}
+
   delete() {}
+
   createDatabase(database_name: string) {
     // CREATE DATABASE IF NOT EXISTS dabase_name
-    const q = "CREATE DATABASE IF NOT EXISTS " + database_name;
+    const q = `CREATE DATABASE ${database_name}`;
     this.connection.query(q, (err, results, fields) => {
       if (err) {
-        console.log(err);
+        switch (err.errno) {
+          case 1007:
+            console.log("数据库已经存在");
+            break;
+          default:
+            console.log(err.code + ": " + err.errno);
+            break;
+        }
         return;
       }
       console.log("创建数据库成功：");
       // console.log(results);
     });
   }
+
   dropDatabase(database_name: string) {
     // DROP DATABASE database_name
   }
-  createTable(table_name: string, content: object) {
+
+  createTable(table_name: string, columns: string[]) {
     //  CREATE TABLE table_name (content)
     // const q = `CREATE TABLE IF NOT EXISTS ${content}`
-    const q = 'CREATE TABLE IF NOT EXISTS (' +
-      
-      +')'
+    let s: string[] = [];
+    columns.map((i) => {
+      s.push(i + " VARCHAR(255)");
+    });
+    const q = `CREATE TABLE IF NOT EXISTS ${table_name} (userId INT AUTO_INCREMENT PRIMARY KEY, ${s})`;
 
+    this.connection.query(q, (err, results, fields) => {});
   }
+
   dropTable(table_name: string) {
     // DROP TABLE table_name
   }
+
   trncateTable(table_name: string) {
     // TRUNCATE TABLE table_name
   }
-  showDatabase(database_name: string) {
-    const q = `SHOW DATABASES`;
-    this.connection.query(q, (err, results, fields) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      console.log(results[0]);
-    });
-  }
-  showTable(table_name: string) {}
 }
 
 export default VTool;

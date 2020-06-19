@@ -16,6 +16,7 @@
 - dropDatabase(database_name: string) 
 
 - createTable(table_name: string, content: object) 
+  自动创建带有id的自增长主键
   CREATE TABLE IF NOT EXISTS (column1 type, column2 type, ...)
   ['name VARCHAR(255)']
 

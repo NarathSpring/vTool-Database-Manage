@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "webpack-dev": "./node_modules/.bin/webpack index.ts"
+    "webpack-dev": "./node_modules/.bin/webpack index.ts",
+    "test-seed": "ts-node ./src/seed.ts"
   },
   "dependencies": {
     "express": "^4.17.1",
