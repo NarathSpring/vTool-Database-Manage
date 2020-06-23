@@ -10,6 +10,7 @@ class VTool {
       user: this.config.user,
       password: this.config.password
     });
+    // console.log(this.connection)
   }
 
   connect() {
@@ -41,7 +42,7 @@ class VTool {
           console.log(err);
           return;
         }
-      console.log(results);
+        console.log(results);
       });
     } else {
       const q = `SHOW ${table_name} FROM ${database_name}`;
@@ -54,6 +55,10 @@ class VTool {
 
   delete() {}
 
+  useDatabase(database_name: string) {
+    this.connection.config.database = database_name;
+    console.log(this.connection.config.database);
+  }
   createDatabase(database_name: string) {
     // CREATE DATABASE IF NOT EXISTS dabase_name
     const q = `CREATE DATABASE ${database_name}`;
@@ -86,8 +91,15 @@ class VTool {
       s.push(i + " VARCHAR(255)");
     });
     const q = `CREATE TABLE IF NOT EXISTS ${table_name} (userId INT AUTO_INCREMENT PRIMARY KEY, ${s})`;
+    console.log(q);
 
-    this.connection.query(q, (err, results, fields) => {});
+    // this.connection.query(q, (err, results, fields) => {
+    //   if (err) {
+    //     console.log(err);
+    //     return;
+    //   }
+    //   console.log(results);
+    // });
   }
 
   dropTable(table_name: string) {
