@@ -5,7 +5,9 @@
   "license": "MIT",
   "scripts": {
     "webpack-dev": "./node_modules/.bin/webpack index.ts",
-    "test-seed": "ts-node ./src/seed.ts"
+    "test-seed": "ts-node ./src/seed.ts",
+    "db:create": "ts-node ./src/CreateDatabase.ts",
+    "db:drop": "ts-node ./src/DropDatabase.ts"
   },
   "dependencies": {
     "express": "^4.17.1",
