@@ -27,3 +27,22 @@
 - showDatabase(database_name: string)
 
 - showTable(table_name: string)
+
+
+## 增：
+
+- 构造数据对象：user
+
+
+
+填写配置文件
+
+创建数据模型
+
+import db & import config & import Model
+
+```javascript
+const db = new DB()
+db.connect()
+// 其他操作
+```
