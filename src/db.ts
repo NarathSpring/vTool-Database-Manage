@@ -1,6 +1,6 @@
 import mysql from "mysql";
 
-class VTool {
+export class DB {
   private _connection: mysql.Connection;
   private _table: string = "";
   private _database: string = "";
@@ -15,7 +15,7 @@ class VTool {
       user: this.config.user,
       password: this.config.password,
       database: this.config.database,
-      charset: this.config.charset
+      charset: this.config.charset,
     });
   }
 
@@ -112,5 +112,3 @@ class VTool {
     // TRUNCATE TABLE table_name
   }
 }
-
-export default VTool;

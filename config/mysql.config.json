@@ -4,6 +4,5 @@
   "user": "root",
   "database": "test",
   "password": "123456",
-  "table": "test_table",
   "charset": "utf8_general_ci"
 }
