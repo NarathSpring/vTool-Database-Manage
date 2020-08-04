@@ -13,12 +13,13 @@ class VTool {
       host: this.config.host,
       port: this.config.port,
       user: this.config.user,
-      password: this.config.password
+      password: this.config.password,
+      database: this.config.database,
+      charset: this.config.charset
     });
-    // console.log(this.connection)
   }
 
-  connect() {
+  async connect() {
     this._connection.connect((err) => {
       if (err) {
         console.log(err);
@@ -54,22 +55,17 @@ class VTool {
     }
   }
 
-  save(object: object, table_name?: string) {
-    // let arr: string[] = []
-    // for (var i in object) {
-    //   if (object.hasOwnProperty(i)) {
-    //     arr.push(i)
-    //   }
-    // }
-    console.log(object);
+  async save(data_model: object, table_name: string) {
+    const columns = Object.keys(data_model);
+    await this.createTable(table_name, columns);
 
     const q = `INSERT INTO ${table_name} SET ?`;
-    this._connection.query(q, object, (err, results, fields) => {
+    this._connection.query(q, data_model, (err, results, fields) => {
       if (err) {
         console.log(err);
         return;
       }
-      console.log(results);
+      console.log("保存data成功");
     });
   }
 
@@ -83,21 +79,20 @@ class VTool {
     // console.log(this._connection.config.database);
   }
 
-  createTable(table_name: string, columns: string[]) {
+  async createTable(table_name: string, columns: string[]) {
     //  CREATE TABLE table_name (content)
     let s: string[] = [];
     columns.map((i) => {
       s.push(i + " VARCHAR(255)");
     });
-    const q = `CREATE TABLE IF NOT EXISTS ${table_name} (userId INT AUTO_INCREMENT PRIMARY KEY, ${s}) CHARSET=utf8`;
-    console.log(q);
 
+    const q = `CREATE TABLE IF NOT EXISTS ${table_name} (id INT AUTO_INCREMENT PRIMARY KEY, ${s}) CHARSET=utf8`;
     this._connection.query(q, (err, results, fields) => {
       if (err) {
         console.log(err);
         return;
       }
-      console.log(results);
+      console.log("建表成功");
     });
   }
 
