@@ -6,7 +6,7 @@ const con = mysql.createConnection({
   port: config.port,
   user: config.user,
   password: config.password,
-  charset: config.charset
+  charset: config.charset,
 });
 
 con.connect((err) => {
@@ -25,7 +25,7 @@ con.query(q, (err, results, fields) => {
       code: err.code,
       errno: err.errno,
       sqlMessage: err.sqlMessage,
-      sql: err.sql
+      sql: err.sql,
     };
     console.log("error: " + JSON.stringify(error));
     return;
