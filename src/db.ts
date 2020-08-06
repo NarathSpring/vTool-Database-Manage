@@ -15,7 +15,7 @@ export class DB {
       user: this.config.user,
       password: this.config.password,
       database: this.config.database,
-      charset: this.config.charset,
+      charset: this.config.charset
     });
   }
 
@@ -26,6 +26,7 @@ export class DB {
         return;
       }
       console.log("连接成功");
+      return 1;
     });
   }
 
@@ -37,22 +38,6 @@ export class DB {
       }
       console.log("关闭成功");
     });
-  }
-  query() {}
-
-  show(database_name: string, table_name?: string) {
-    if (arguments.length === 1) {
-      const q = "SHOW DATABASES";
-      this._connection.query(q, (err, results, fields) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        console.log(results);
-      });
-    } else {
-      const q = `SHOW ${table_name} FROM ${database_name}`;
-    }
   }
 
   async save(data_model: object, table_name: string) {
@@ -69,9 +54,7 @@ export class DB {
     });
   }
 
-  remove() {}
-
-  delete() {}
+  async remove() {}
 
   useDatabase(database_name: string) {
     this._connection.config.database = database_name;
@@ -96,6 +79,20 @@ export class DB {
     });
   }
 
+  async find() {}
+  async findAll(table_name: string) {
+    // SELECT * FROM table
+    const q = `SELECT * FROM ${table_name}`;
+    this._connection.query(q, (err, results, fields) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      // console.log(results);
+      return results;
+    });
+  }
+
   dropTable(table_name: string) {
     // DROP TABLE table_name
     const q = `DROP TABLE ${table_name}`;
@@ -106,9 +103,5 @@ export class DB {
       }
       console.log(results);
     });
-  }
-
-  trncateTable(table_name: string) {
-    // TRUNCATE TABLE table_name
   }
 }
