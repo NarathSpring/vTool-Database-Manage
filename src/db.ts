@@ -19,14 +19,13 @@ export class DB {
     });
   }
 
-  async connect() {
-    this._connection.connect((err) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      console.log("连接成功");
-      return 1;
+  connect() {
+    return new Promise((resolve, reject) => {
+      this._connection.connect((err) => {
+        if (err) return new Error("err");
+        console.log("连接成功");
+        resolve(12);
+      });
     });
   }
 
@@ -80,16 +79,18 @@ export class DB {
   }
 
   async find() {}
-  async findAll(table_name: string) {
+  
+  findAll(table_name: string) {
     // SELECT * FROM table
-    const q = `SELECT * FROM ${table_name}`;
-    this._connection.query(q, (err, results, fields) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      // console.log(results);
-      return results;
+    return new Promise((resolve, reject) => {
+      const q = `SELECT * FROM ${table_name}`;
+      this._connection.query(q, (err, results, fields) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        resolve(results);
+      });
     });
   }
 

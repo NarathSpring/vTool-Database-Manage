@@ -1,6 +1,6 @@
 import * as express from "express";
 
-import { CustomRoutes } from "./routes";
+import { CustomRoutes } from "../config/routes";
 
 let Router = express.Router();
 

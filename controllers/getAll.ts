@@ -12,13 +12,12 @@ export async function getAll(req: Express.Request, res: Express.Response) {
       // user.phone = "13566263333";
       // user.address = "中文字符";
       // db.save(user, "user");
-      
-      console.log("++++++++++++++++++++++++++");
+      console.log("x:" + x);
 
-      const users = await db.findAll("user");
-      console.log(users);
-
-      console.log("---------------------------");
+      const users = (await db.findAll("user")) as Array<object>;
+      users.map((user: any) => {
+        console.log(JSON.stringify(user));
+      });
     })
     .then(() => {
       db.end();
@@ -27,6 +26,5 @@ export async function getAll(req: Express.Request, res: Express.Response) {
       console.log(err);
       return;
     });
-
-  res.json({ msg: "getAll" });
+  res.end();
 }

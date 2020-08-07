@@ -1,7 +1,7 @@
 import express from "express";
 
 
-import Router from "./routes/router";
+import Router from "./router/router";
 
 const app: express.Application = express();
 
