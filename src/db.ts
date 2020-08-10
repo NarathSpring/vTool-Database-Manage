@@ -1,9 +1,9 @@
-import mysql from "mysql";
+import mysql, { MysqlError, QueryFunction, queryCallback } from "mysql";
 
 export class DB {
   private _connection: mysql.Connection;
-  private _table: string = "";
-  private _database: string = "";
+  public _table: string = "user";
+  public _database: string = "";
 
   // 待插入的内容
   public content = {};
@@ -22,9 +22,9 @@ export class DB {
   connect() {
     return new Promise((resolve, reject) => {
       this._connection.connect((err) => {
-        if (err) return new Error("err");
+        if (err) reject(err);
         console.log("连接成功");
-        resolve(12);
+        resolve();
       });
     });
   }
@@ -53,12 +53,15 @@ export class DB {
     });
   }
 
-  async remove() {}
+  remove() {}
 
-  useDatabase(database_name: string) {
+  async useDatabase(database_name: string) {
     this._connection.config.database = database_name;
     this._database = database_name;
-    // console.log(this._connection.config.database);
+  }
+
+  async useTable(table_name: string) {
+    this._table = table_name;
   }
 
   async createTable(table_name: string, columns: string[]) {
@@ -68,34 +71,64 @@ export class DB {
       s.push(i + " VARCHAR(255)");
     });
 
-    const q = `CREATE TABLE IF NOT EXISTS ${table_name} (id INT AUTO_INCREMENT PRIMARY KEY, ${s}) CHARSET=utf8`;
-    this._connection.query(q, (err, results, fields) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      console.log("建表成功");
-    });
-  }
-
-  async find() {}
-  
-  findAll(table_name: string) {
-    // SELECT * FROM table
-    return new Promise((resolve, reject) => {
-      const q = `SELECT * FROM ${table_name}`;
-      this._connection.query(q, (err, results, fields) => {
+    this._connection.query(
+      {
+        sql: `CREATE TABLE IF NOT EXISTS ${table_name} (id INT AUTO_INCREMENT PRIMARY KEY, ${s}) CHARSET=utf8`
+      },
+      (err, results) => {
         if (err) {
           console.log(err);
           return;
         }
-        resolve(results);
-      });
+        console.log("建表成功");
+        this._table = table_name;
+      }
+    );
+  }
+
+  findOne(...arg) {
+    return new Promise((resolve, reject) => {
+      if (arg.length === 1 && typeof arg[0] === "number") {
+        this._connection.query(
+          {
+            sql: `SELECT * FROM ${this._table} WHERE id = ${arg[0]}`
+          },
+          (err, results) => {
+            if (err) reject(err);
+            resolve(results);
+          }
+        );
+      } else {
+        this._connection.query(
+          {
+            sql: `SELECT * FROM ${this._table} WHERE ${arg[0]} = ?`,
+            values: arg[1].toString()
+          },
+          (err, results) => {
+            if (err) reject(err);
+            resolve(results);
+          }
+        );
+      }
+    });
+  }
+
+  findAll() {
+    // SELECT * FROM table
+    return new Promise((resolve, reject) => {
+      this._connection.query(
+        {
+          sql: `SELECT * FROM ${this._table}`
+        },
+        (err, results) => {
+          if (err) reject(err);
+          resolve(results);
+        }
+      );
     });
   }
 
   dropTable(table_name: string) {
-    // DROP TABLE table_name
     const q = `DROP TABLE ${table_name}`;
     this._connection.query(q, (err, results, fields) => {
       if (err) {
